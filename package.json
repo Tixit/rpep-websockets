@@ -1,0 +1,40 @@
+{
+  "name": "rpep-websockets",
+  "version": "1.0.0",
+  "main": "rpep-websockets.js",
+  "description": "Websocket transport for rpep.js",
+  "keywords": [
+    "rpc",
+    "event",
+    "protocol",
+    "communication",
+    "messaging",
+    "zeromq",
+    "zmq",
+    "0mq",
+    "socket",
+    "stream",
+    "BSON",
+    "serialization",
+    "encode",
+    "decode"
+  ],
+  "dependencies": {
+    "websocket": "*"
+  },
+  "peerDependencies": {
+    "rpep": "*"
+  },
+  "devDependencies": {
+    "pem": "^1.12.3",
+    "opn": "*",
+    "rpep-msgpack": "*",
+    "build-modules": "2",
+    "deadunit": "*",
+    "rpep": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Tixit/rpep-websockets"
+  }
+}
