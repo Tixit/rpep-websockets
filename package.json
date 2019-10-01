@@ -1,7 +1,7 @@
 {
   "name": "rpep-websockets",
   "version": "1.0.0",
-  "main": "rpep-websockets.js",
+  "main": "ws.node.js",
   "description": "Websocket transport for rpep.js",
   "keywords": [
     "rpc",
