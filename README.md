@@ -54,7 +54,7 @@ API:
     * `secure` - (Default:`false`) If `true` and `transportOptions.httpServer` is undefined, will create an https server. If `transportOptions.httpServer` is defined, this is ignored.
     * `secureOptions` - The options to pass into `https.createServer` if `secure` is true.
     * `httpServer` - If this is defined, uses this server instead of creating a new one.
-    * `httpHandler(request)` - If this is defined, it is a callback that's called when a normal http/https request comes through.
+    * `httpHandler(request, response)` - If this is defined, it is a callback that's called when a normal http/https request comes through.
   * `rpepOptions` are pass through arguments that don't affect the operation of this transport.
 
 How to Test
