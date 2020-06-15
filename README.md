@@ -44,8 +44,8 @@ API:
     * `origin`
     * `headers`
     * `requestOptions`
-  * `connectionOptions` for the browser - 
-    * `binaryType` - The [binaryType property](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/binaryType) of a websocket connection.
+  * `connectionOptions` for the browser:
+    * `binaryType` - The [binaryType property](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/binaryType) of a websocket connection. Defaults to "arraybuffer", which is what the `theturtle32/WebSocket-Node` library used for node.js requires.
     * `protocol` - (Default: 'ws') Either 'wss' or 'ws'.
   * `rpepOptions` are pass through arguments that don't affect the operation of this transport.
 

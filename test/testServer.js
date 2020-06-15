@@ -67,7 +67,7 @@ buildRun.then(function() {
         var testOptions = {
             clientErrorOptions: ['localhost', 6080],
             clientError: "Connection couldn\'t be opened: \nconnectionFailure - Error: connect ECONNREFUSED 127.0.0.1:6080",
-            listenerErrorOptions: ['notAValidPort'], listenerError: "listen EACCES notAValidPort",
+            listenerErrorOptions: ['notAValidPort'], listenerError: "listen EACCES: permission denied notAValidPort",
             rawMessages: testUtils.createRawMessageTests(json),
             nextListenerOptions: function(lastOptions) {
                 if(lastOptions === undefined) lastOptions = [testOptions.clientErrorOptions[1]]

@@ -1,7 +1,7 @@
 module.exports = function(transportOptions) {
     return {
         // connectionOptions
-            // binaryType - The binaryType property of a websocket connection
+            // binaryType - The binaryType property of a websocket connection. Defaults to "arraybuffer"
             // protocol - (Default: 'ws') Either 'wss' or 'ws'
         connect: function(host, port/*, [connectionOptions,] rpepOptions*/) {
             if(arguments.length <= 3) {
@@ -16,7 +16,7 @@ module.exports = function(transportOptions) {
 
             var wsConnection = new WebSocket(connectionOptions.protocol+'://'+host+':'+port)
             if(connectionOptions.binaryType)
-                wsConnection.binaryType = connectionOptions.binaryType
+                wsConnection.binaryType = connectionOptions.binaryType || "arraybuffer"
 
             return {
                 send: function(m) {
