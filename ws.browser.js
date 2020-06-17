@@ -15,8 +15,7 @@ module.exports = function(transportOptions) {
             if(!connectionOptions.protocol) connectionOptions.protocol = 'ws'
 
             var wsConnection = new WebSocket(connectionOptions.protocol+'://'+host+':'+port)
-            if(connectionOptions.binaryType)
-                wsConnection.binaryType = connectionOptions.binaryType || "arraybuffer"
+            wsConnection.binaryType = connectionOptions.binaryType || "arraybuffer"
 
             return {
                 send: function(m) {
