@@ -129,6 +129,9 @@ var ClientConnectionObject = function(client) {
     var wsConnection, onCloseHandler, onMessageHandler, onErrorHandler;
     client.on('connect', function(connection) {
         wsConnection = connection
+        attachCloseHandler(connection, onCloseHandler)
+        attachMessageHandler(connection, onMessageHandler)
+        attachErrorHandler(connection, onErrorHandler)
     })
     client.on('connectFailed', function(errorString) {
         var reason = errorString.toString().match(/x-websocket-reject-reason: (.*)/)
@@ -155,10 +158,6 @@ var ClientConnectionObject = function(client) {
         },
         onOpen: function(cb) {
             client.on('connect', function(connection) {
-                attachCloseHandler(connection, onCloseHandler)
-                attachMessageHandler(connection, onMessageHandler)
-                attachErrorHandler(connection, onErrorHandler)
-
                 cb()
             })
         },

@@ -1,6 +1,6 @@
 {
   "name": "rpep-websockets",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "main": "ws.node.js",
   "description": "Websocket transport for rpep.js",
   "keywords": [
@@ -31,7 +31,7 @@
     "rpep-msgpack": "*",
     "build-modules": "2",
     "deadunit": "*",
-    "rpep": "*"
+    "rpep": "2.1.0"
   },
   "repository": {
     "type": "git",
