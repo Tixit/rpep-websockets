@@ -6,19 +6,16 @@ var WebSocketServer = require('websocket').server
 var WebSocketClient = require('websocket').client
 
 
-// transportOptions contains:
-    // options for https://github.com/theturtle32/WebSocket-Node/blob/master/docs/WebSocketServer.md
-    // Also, the additional options from here: https://github.com/theturtle32/WebSocket-Node/blob/master/docs/WebSocketClient.md (should just be `tlsOptions` and `webSocketVersion`)
-module.exports = function(transportOptions) {
-    if(!transportOptions) transportOptions = {}
+module.exports = function() {
     
     return {
-        // connectionOptions - See here for more info: https://github.com/theturtle32/WebSocket-Node/blob/master/docs/WebSocketClient.md
+        // connectionOptions - Options to pass to WebSocket-Node's WebSocketClient.
             // protocol - (Default: 'ws') Either 'wss' or 'ws'
             // wsProtocols - A string or array of strings representing the websocket-protocols to request
             // origin
             // headers
             // requestOptions
+            // Additional options from https://github.com/theturtle32/WebSocket-Node/blob/master/docs/WebSocketClient.md
         connect: function(host, port/*, [connectionOptions,] rpepOptions*/) {
             if(arguments.length <= 3) {
                 var rpepOptions = arguments[2]
@@ -28,22 +25,24 @@ module.exports = function(transportOptions) {
             }
 
             if(connectionOptions === undefined) connectionOptions = {}
-            var co = connectionOptions
+            var co = Object.assign({}, connectionOptions) // copy
 
             if(co.protocol === undefined) co.protocol = 'ws'
             if(co.wsProtocol === undefined) co.wsProtocol = ''
 
-            var client = new WebSocketClient(transportOptions)
+            var client = new WebSocketClient(co)
             client.connect(co.protocol+'://'+host+':'+port, co.wsProtocol, co.origin, co.headers, co.requestOptions)
 
             return ClientConnectionObject(client)
         },
 
-        // listenerOptions
+        // port - (Optional) The port to use *only* if the `httpServer`
+        // listenerOptions - options for https://github.com/theturtle32/WebSocket-Node/blob/master/docs/WebSocketServer.md
             // secure - (Default:false) If true and `httpServer` is undefined, will create an https server
             // secureOptions - The options to pass into `https.createServer` if `secure` is true
             // httpServer - If this is defined, uses this server instead of creating a new one
             // httpHandler(request) - If this is defined, it is a callback that's called when a normal http request comes through.
+        // rpepOptions - Unused here, but will be passed.
         listen: function(port/*,[listenerOptions,] rpepOptions, requestHandler*/) {
             if(arguments.length <= 3) {
                 var rpepOptions = arguments[1]
@@ -65,10 +64,10 @@ module.exports = function(transportOptions) {
                 } else {
                     LO.httpServer = http.createServer(LO.httpHandler)
                 }
+                LO.httpServer.listen(port)
             }
 
-            transportOptions.httpServer = LO.httpServer
-            var wsServer = new WebSocketServer(transportOptions)
+            var wsServer = new WebSocketServer(listenerOptions)
             wsServer.on('request', function(request) {
                 try {
                     requestHandler({
@@ -97,8 +96,6 @@ module.exports = function(transportOptions) {
                     }
                 }
             })
-
-            listenerOptions.httpServer.listen(port)
 
             var onCloseHandler, errorHandler;
             return {

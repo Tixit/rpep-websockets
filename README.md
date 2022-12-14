@@ -34,8 +34,7 @@ rpepWebsockets; // rpep-websockets.umd.js can define rpepWebsockets globally if 
 
 API:
 
-* **`var transport = rpepWebsockets(transportOptions)`** - Creates a new instance of the transport (to be pased into `rpep`'s constructor).
-  * `transportOptions ` - (Optional) For node.js, these are options for [theturtle32/WebSocket-Node WebSocketServer](https://github.com/theturtle32/WebSocket-Node/blob/master/docs/WebSocketServer.md) which can also be passed additional options from [theturtle32/WebSocket-Node WebSocketClient](https://github.com/theturtle32/WebSocket-Node/blob/master/docs/WebSocketClient.md) (should just be `tlsOptions` and `webSocketVersion`). The most important option is `httpServer`, where you can pass a handle to an existing http server or https server. If no http/https server is passed, one will be created internally (http or https is determined by arguments passed to `listen`). For the browser, there are no transportOptions so none need be passed.
+* **`var transport = rpepWebsockets()`** - Creates a new instance of the transport (to be passed into `rpep`'s constructor).
   
 * **`transport.connect(host, port, [connectionOptions,] rpepOptions)`** - Connects to a websocket host. These arguments will be passed through to this method from a call to `rpep.connect`.
   * `connectionOptions` for node.js - These are [theturtle32/WebSocket-Node WebSocketClient](https://github.com/theturtle32/WebSocket-Node/blob/master/docs/WebSocketClient.md) options. Important ones being:
@@ -50,10 +49,11 @@ API:
   * `rpepOptions` are pass through arguments that don't affect the operation of this transport.
 
 * **`transport.listen(port, [listenerOptions,] rpepOptions, requestHandler)`** - Listens for websocket connections. These arguments will be passed through to this method from a call to `rpep.listen`. This method only exists for the node.js version. You can't listen for websocket connections from a browser.
-  * `listenerOptions`
+  * `port` - Optional if `listenerOptions.httpServer` is passed.
+  * `listenerOptions`- These are [theturtle32/WebSocket-Node WebSocketServer](https://github.com/theturtle32/WebSocket-Node/blob/master/docs/WebSocketServer.md) options. Important ones being:
     * `secure` - (Default:`false`) If `true` and `transportOptions.httpServer` is undefined, will create an https server. If `transportOptions.httpServer` is defined, this is ignored.
     * `secureOptions` - The options to pass into `https.createServer` if `secure` is true.
-    * `httpServer` - If this is defined, uses this server instead of creating a new one.
+    * `httpServer` - If this is defined, uses this server instead of creating a new one. The passed `port` won't be used. If no http/https server is passed, one will be created internally (http or https is determined by arguments passed to `listen`). For the browser, there are no transportOptions so none need be passed.
     * `httpHandler(request, response)` - If this is defined, it is a callback that's called when a normal http/https request comes through.
   * `rpepOptions` are pass through arguments that don't affect the operation of this transport.
 

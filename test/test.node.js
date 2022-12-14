@@ -1,8 +1,10 @@
 "use strict";
 
+var http = require("http")
+var rpep = require("rpep")
 var Unit = require('deadunit')
 
-var testTransportModule = require('rpep/test/node_modules/testTransport')
+var testTransport = require('rpep/test/node_modules/testTransport')
 var testUtils = require("rpep/test/node_modules/testUtils")
 
 var wsNode = require('../ws.node')
@@ -30,7 +32,7 @@ Unit.test('All node tests', function(t) {
             var testOptions = {
                 clientErrorOptions: ['localhost', 6080],
                 clientError: "Connection couldn\'t be opened: \nconnectionFailure - Error: connect ECONNREFUSED 127.0.0.1:6080",
-                listenerErrorOptions: ['notAValidPort'], listenerError: "listen EACCES notAValidPort",
+                listenerErrorOptions: ['notAValidPort'], listenerError: "listen EACCES: permission denied notAValidPort",
                 rawMessages: testUtils.createRawMessageTests(msgpack),
                 nextListenerOptions: function(lastOptions) {
                     if(lastOptions === undefined) lastOptions = [testOptions.clientErrorOptions[1]]
@@ -44,7 +46,7 @@ Unit.test('All node tests', function(t) {
 
             testUtils.runTest(this, 'rpep with websockets for node', msgpack, wsNode, testOptions).then(function() {
                 t.test("ws.node-specific tests", function(t) {
-                    this.count(2)
+                    this.count(3)
 
                     var pem = require('pem')
                     pem.createCertificate({days:365*10, selfSigned:true}, function(e, tlsKeys) {
@@ -54,15 +56,18 @@ Unit.test('All node tests', function(t) {
                         testOptions.clientError = "Connection couldn\'t be opened: \nconnectionFailure - Error: connect ECONNREFUSED 127.0.0.1:7080",
                         testOptions.nextListenerOptions = function(lastOptions) {
                             if(lastOptions === undefined) lastOptions = [testOptions.clientErrorOptions[1]]
-                            return [lastOptions[0]+1, {secure:true, secureOptions:{key: tlsKeys.serviceKey, cert: tlsKeys.certificate}}]
+                            return [lastOptions[0]+1, {
+                                secure:true,
+                                secureOptions:{key: tlsKeys.serviceKey, cert: tlsKeys.certificate}
+                            }]
                         }
                         testOptions.nextClientOptions = function(lastOptions) {
                             if(lastOptions === undefined) lastOptions = testOptions.clientErrorOptions
-                            return ['localhost', lastOptions[1]+1, {protocol:'wss'}]
+                            return ['localhost', lastOptions[1]+1, {protocol:'wss', tlsOptions:{rejectUnauthorized: false}}]
                         }
 
                         testUtils.runTest(t, 'tls/wss', msgpack, function() {
-                            return wsNode({tlsOptions:{rejectUnauthorized: false}})
+                            return wsNode()
                         }, testOptions)
                     })
 
@@ -71,9 +76,30 @@ Unit.test('All node tests', function(t) {
                     //
                     // })
                     //
-                    // this.test('http server option', function() {
-                    //
-                    // })
+                    this.test('http server option', function() {
+                        this.count(2)
+
+                        const httpServerPort = 8912, ignoredPort = 8000
+                        const httpServer = http.createServer(function (request, response) {
+                            response.writeHead(200)
+                            response.end()
+                        }).listen(httpServerPort)
+
+                        var server = rpep(wsNode(), msgpack)
+                        server.listen(ignoredPort, {httpServer}, function(request) {
+                            request.accept()
+                            setTimeout(() => server.close())
+                        })
+
+                        const client = rpep(wsNode(), msgpack)
+                        client.connect('localhost', httpServerPort).then(connection => {
+                            this.ok(true)
+                        })
+
+                        client.connect('localhost', ignoredPort).catch(e => {
+                            this.ok(e.message.includes("ECONNREFUSED"))
+                        })
+                    })
                     //
                     // this.test('different protocols', function() {
                     //
