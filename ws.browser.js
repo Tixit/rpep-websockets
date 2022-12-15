@@ -17,6 +17,34 @@ module.exports = function(transportOptions) {
             var wsConnection = new WebSocket(connectionOptions.protocol+'://'+host+':'+port)
             wsConnection.binaryType = connectionOptions.binaryType || "arraybuffer"
 
+            const handlers = {open:[], close:[], message:[], error:[]}
+            wsConnection.onopen = function() {
+                for(const handler of handlers.open) {
+                    handler.apply(wsConnection, arguments)
+                }
+            }
+            wsConnection.onclose = function() {
+                for(const handler of handlers.close) {
+                    handler.apply(wsConnection, arguments)
+                }
+            }
+            wsConnection.onmessage = function(m) {
+                for(const handler of handlers.message) {
+                    handler.apply(wsConnection, [m.data])
+                }
+            }
+            wsConnection.onerror = function(e) {
+                for(const handler of handlers.error) {
+                    if(e instanceof Event) {
+                        var error = new Error('Websocket error event (probably means the connection couldn\'t be made or has been closed)')
+                        error.event = e
+                        handler.apply(wsConnection, [error])
+                    } else {
+                        handler.apply(wsConnection, [e])
+                    }
+                }
+            }
+
             return {
                 send: function(m) {
                     wsConnection.send(m)
@@ -25,26 +53,16 @@ module.exports = function(transportOptions) {
                     wsConnection.close()
                 },
                 onOpen: function(cb) {
-                    wsConnection.onopen = cb
+                    handlers.open.push(cb)
                 },
                 onClose: function(cb) {
-                    wsConnection.onclose = cb
+                    handlers.close.push(cb)
                 },
                 onMessage: function(cb) {
-                    wsConnection.onmessage = function(m) {
-                        cb(m.data)
-                    }
+                    handlers.message.push(cb)
                 },
                 onError: function(cb) {
-                    wsConnection.onerror = function(e) {
-                        if(e instanceof Event) {
-                            var error = new Error('Websocket error event (probably means the connection couldn\'t be made or has been closed)')
-                            error.event = e
-                            cb(error)
-                        } else {
-                            cb(e)
-                        }
-                    }
+                    handlers.error.push(cb)
                 },
                 rawConnection: wsConnection
             }

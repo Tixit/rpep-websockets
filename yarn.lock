@@ -556,29 +556,30 @@ d@1, d@^1.0.1:
     es5-ext "^0.10.50"
     type "^1.0.1"
 
-deadunit-core@5.0.20:
-  version "5.0.20"
-  resolved "https://registry.yarnpkg.com/deadunit-core/-/deadunit-core-5.0.20.tgz#929652ccc980c5d0b307bc6f150e75fff0d259dc"
-  integrity sha512-q3UlsJTEzj060Tvcqz2NhapR56uki9ZJwYVMWyag7u/oADiyBWF3mQ0S+SKgi6kNTJSadta7HosnE6PbKK82RA==
+deadunit-core@5.0.22:
+  version "5.0.22"
+  resolved "https://registry.yarnpkg.com/deadunit-core/-/deadunit-core-5.0.22.tgz#a70fe7a7656c0144da9e7d06484063e531e3543b"
+  integrity sha512-1O95Ku7pcQXzbUidJm7xFfYYFf8YYaoK+niECLdbX3/n3KctNbqqgFvyA9VoPCxh6V0cLB+oXP2XRVk2m+P7hg==
   dependencies:
     ajax "https://github.com/fresheneesz/ajax/archive/28d7ca2a922446ad9d2eae7d1bc615f3dbeb2f57.tar.gz"
     async-future "1.0.6"
     colors "https://github.com/fresheneesz/colors.js/archive/e990804d7c301765409770582c6aa6d562a23198.tar.gz"
+    mime "^3.0.0"
     proto "1.0.18"
-    source-map ""
+    source-map "0.5.7"
     source-map-resolve "0.1.3"
     stack-trace "0.0.7"
     stackinfo "1.1.4"
 
-deadunit@*:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/deadunit/-/deadunit-5.2.1.tgz#00530693054a0f8ee219398b363607f29530ba37"
-  integrity sha512-KzOiG9I1q+g4NmlmdxZd7y33AjJqYR6A1B4Ijq11v06KdrhXk9l4Cn3QMtxR9rq5pnyPj42Ehnv3LcUaNfOM0g==
+deadunit@5.2.2:
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/deadunit/-/deadunit-5.2.2.tgz#b86d62d33fd1b95fbe4b5ea496e516c3b96291f3"
+  integrity sha512-bUPtSNwQfA6RCEprhvnRRs5jD3lp/gWl5JOqCJK9uKi03UOtYPOc34SYbPdd/S1/76MKm1pzIwHKMrHzlsMnoQ==
   dependencies:
     async-future "0.1.18"
     blocks.js "0.9.14"
     colors "https://github.com/fresheneesz/colors.js/archive/e990804d7c301765409770582c6aa6d562a23198.tar.gz"
-    deadunit-core "5.0.20"
+    deadunit-core "5.0.22"
     proto "1.0.17"
 
 debug@^2.2.0, debug@^2.3.3:
@@ -1453,6 +1454,11 @@ miller-rabin@^4.0.0:
     bn.js "^4.0.0"
     brorand "^1.0.1"
 
+mime@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/mime/-/mime-3.0.0.tgz#b374550dca3a0c18443b0c950a6a58f1931cf7a7"
+  integrity sha512-jSCU7/VB1loIWBZe14aEYHU/+1UMEHoaO7qxCOVJOw9GgH72VAWppxNcjU+x9a2k3GSIBXNKxXQFqRvvZ7vr3A==
+
 mimic-fn@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-1.2.0.tgz#820c86a39334640e99516928bd03fca88057d022"
@@ -2157,12 +2163,7 @@ source-map-url@~0.2.0:
   resolved "https://registry.yarnpkg.com/source-map-url/-/source-map-url-0.2.0.tgz#5c3d205a993c50d443081933718ae4ccac222425"
   integrity sha512-1Fuotv1kNP2juPIvX3YPZ37y/tKRCDEIJwjsCn7dc+AlrGZssbdIy1MgFkQlCMqGVTBjxXDbtfQYCQV7WPTs5Q==
 
-source-map@:
-  version "0.7.4"
-  resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.7.4.tgz#a9bbe705c9d8846f4e08ff6765acf0f1b0898656"
-  integrity sha512-l3BikUxvPOcn5E74dZiq5BGsTb5yEwhaTSzccU6t4sDOH8NWJCstKO5QT2CvtFoK6F0saL7p9xHAqHOlCPJygA==
-
-source-map@^0.5.3, source-map@^0.5.6, source-map@~0.5.1:
+source-map@0.5.7, source-map@^0.5.3, source-map@^0.5.6, source-map@~0.5.1:
   version "0.5.7"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
   integrity sha512-LbrmJOMUSdEVxIKvdcJzQC+nQhe8FUZQTXQy6+I75skNgn3OoQ0DZA8YnFa7gp8tqtL3KPf1kmo0R5DoApeSGQ==
